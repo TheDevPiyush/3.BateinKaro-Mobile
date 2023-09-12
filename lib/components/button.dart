@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final Function? ontap;
+  final Function() ontap;
 
   const CustomButton({
     super.key,
     required this.text,
-    this.ontap,
+    required this.ontap,
   });
 
   @override
@@ -15,10 +15,7 @@ class CustomButton extends StatelessWidget {
     // final size = MediaQuery.of(context).size;
 
     return InkWell(
-      onTap: () {
-        print("Clicked");
-        FocusScope.of(context).unfocus();
-      },
+      onTap: ontap,
       child: Container(
         width: 150,
         height: 60,
@@ -33,7 +30,7 @@ class CustomButton extends StatelessWidget {
           text,
           style: const TextStyle(
               color: Colors.white,
-              fontSize: 25,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
               letterSpacing: 1),
         ),
