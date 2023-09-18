@@ -11,6 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MaterialApp(
     themeMode: ThemeMode.system,
     debugShowCheckedModeBanner: false,
@@ -23,4 +24,3 @@ void main() async {
     title: "Chatting App",
   ));
 }
-// ARE YUO IN PERIODS?

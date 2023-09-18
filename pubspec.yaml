@@ -46,6 +46,7 @@ dependencies:
   flutter_fgbg: ^0.3.0
   cached_network_image: ^3.2.3
   intl: ^0.18.1
+  firebase_messaging: ^14.6.7
 
 dev_dependencies:
   flutter_test:

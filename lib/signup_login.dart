@@ -17,8 +17,8 @@ Future login(String emailAddress, String password, BuildContext context) async {
       return user;
     } else {
       CustomDialog(
-        title: 'Dialog Title',
-        content: 'Dialog Content',
+        title: 'Could not login',
+        content: 'Faced an issue while logging in. Try again.',
       ).show(context);
     }
   } on FirebaseAuthException catch (e) {
@@ -49,7 +49,12 @@ Future signUp(String emailAddress, String password, String name,
       await FirebaseFirestore.instance
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser?.uid)
-          .set({"name": name, "email": emailAddress, "status": "UA"});
+          .set({
+        "name": name,
+        "email": emailAddress,
+        "status": "UA",
+        "token": "",
+      });
       user.updateDisplayName(name);
       CustomDialog(
         title: "Sign Up Success",

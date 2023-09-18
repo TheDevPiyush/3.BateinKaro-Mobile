@@ -5,12 +5,16 @@ import 'package:chatting_app/components/button.dart';
 import 'package:chatting_app/pages/full_screen_image.dart';
 import 'package:chatting_app/signup_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -120,6 +124,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           'timestamp': FieldValue.serverTimestamp(),
           "send by": FirebaseAuth.instance.currentUser?.displayName,
         });
+        await sendNotificationUsingPostmanAPI(
+          FirebaseAuth.instance.currentUser?.displayName ?? "Message",
+          '${FirebaseAuth.instance.currentUser?.displayName ?? "Message -"} Sent you a picture.',
+        );
         setState(() {
           imageUpload = false;
         });
@@ -147,8 +155,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         'timestamp': FieldValue.serverTimestamp(),
         "send by": FirebaseAuth.instance.currentUser?.displayName,
       });
-
       _messageController.clear();
+      await sendNotificationUsingPostmanAPI(
+        FirebaseAuth.instance.currentUser?.displayName.toString() ?? "Message",
+        messageText,
+      );
     }
   }
 
@@ -156,7 +167,75 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void initState() {
     online();
     WidgetsBinding.instance.addObserver(this);
+    TokenUpdate();
     super.initState();
+  }
+
+  // ignore: non_constant_identifier_names
+  TokenUpdate() async {
+    await FirebaseMessaging.instance.getToken().then(
+      (value) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser?.uid)
+            .update({"token": value});
+      },
+    );
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .update({"token": fcmToken});
+    }).onError((err) {
+      // Error getting token.
+    });
+  }
+
+  Future<void> sendNotificationUsingPostmanAPI(
+      String title, String body) async {
+    const serverKey =
+        'AAAAfFLo64I:APA91bHPoI_j94WR7l0lDmDPpIeisTdybob-fmrpHZelEKoJu5P477D_2BCJwoRfMQKtuOlWxrgcOq5y5TTkFNIawO9O172SCg9L-kf9Ba5o9tU5QzilbI60eMKzbwniQpQRvy73Zj8w'; // Replace with your FCM server key
+    final tokens = await getFCMTokensFromFirestore();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=$serverKey',
+    };
+
+    final data = {
+      'registration_ids': tokens,
+      'notification': {
+        'title': title,
+        'body': body,
+      },
+    };
+
+    const url = 'https://fcm.googleapis.com/fcm/send';
+
+    // ignore: unused_local_variable
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: json.encode(data),
+    );
+  }
+
+  Future<List<String>> getFCMTokensFromFirestore() async {
+    final firestore = FirebaseFirestore.instance;
+    final usersCollection = firestore.collection('users');
+
+    final QuerySnapshot usersSnapshot = await usersCollection.get();
+    final List<String> tokens = [];
+
+    usersSnapshot.docs.forEach((userDoc) {
+      final userData = userDoc.data() as Map<String, dynamic>;
+      if (userData.containsKey('token')) {
+        final String userToken = userData['token'];
+        tokens.add(userToken);
+      }
+    });
+
+    return tokens;
   }
 
   @override
