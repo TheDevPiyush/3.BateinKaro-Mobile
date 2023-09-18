@@ -1,5 +1,5 @@
 import 'package:chatting_app/components/if_logged_in.dart';
-import 'package:chatting_app/components/on_users_list.dart';
+import 'package:chatting_app/pages/on_users_list.dart';
 import 'package:chatting_app/pages/chat_screen.dart';
 import 'package:chatting_app/pages/create_account.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +17,10 @@ void main() async {
     routes: {
       "/": (context) => IfLoggedIn(),
       "/signup": (context) => const CreateAccount(),
-      "/home": (context) => ChatScreen(),
-      "/users": (context) => OnlineUsersScreen(),
+      "/home": (context) => const ChatScreen(),
+      "/users": (context) => const OnlineUsersScreen(),
     },
     title: "Chatting App",
   ));
 }
+// ARE YUO IN PERIODS?

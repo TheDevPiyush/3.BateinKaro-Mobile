@@ -21,7 +21,7 @@ class CustomDialog {
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Okay'),
+              child: const Text('Okay'),
             ),
           ],
         );

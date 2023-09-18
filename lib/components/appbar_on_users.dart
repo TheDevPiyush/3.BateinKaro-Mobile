@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppBarOnlineUserList extends StatelessWidget {
+  const AppBarOnlineUserList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -27,8 +29,8 @@ class AppBarOnlineUserList extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 3.0),
                   child: Text(
                     FirebaseAuth.instance.currentUser?.uid == user.id
-                        ? "You,"
-                        : (user["name"]+","), // Assuming user id is the UID
+                        ? user["name"] + " - " + "You,"
+                        : (user["name"] + ","), // Assuming user id is the UID
                     style: const TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),

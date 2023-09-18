@@ -13,7 +13,6 @@ Future login(String emailAddress, String password, BuildContext context) async {
         .user;
 
     if (user != null) {
-      print("Login Success");
       Navigator.pushReplacementNamed(context, "/users");
       return user;
     } else {
@@ -29,7 +28,6 @@ Future login(String emailAddress, String password, BuildContext context) async {
         content: "No user is available for that email address.",
       ).show(context);
     } else if (e.code == 'wrong-password') {
-      print(1);
       CustomDialog(
         title: "Wrong Password",
         content: "You have entered wrong password for that account.",

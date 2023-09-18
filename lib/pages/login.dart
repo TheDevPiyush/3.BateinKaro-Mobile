@@ -83,16 +83,20 @@ class _LoginState extends State<Login> {
                         width: 45,
                         height: 45,
                         child: const CircularProgressIndicator(
-                          strokeWidth: 8,
+                          strokeWidth: 6,
+                          color: Colors.white,
                         ),
                       )
                     : Container(
                         height: size.height * 0.7,
                         width: size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(50),
+                              bottom: Radius.circular(50),
+                            ),
                             color: Colors.white,
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
                                 color: Colors.black,
                                 offset: Offset(-7, 10),
@@ -106,7 +110,7 @@ class _LoginState extends State<Login> {
                             const Text(
                               "Sign In",
                               style: TextStyle(
-                                  fontSize: 33,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                   letterSpacing: 1),
@@ -114,7 +118,7 @@ class _LoginState extends State<Login> {
                             const Text(
                               "Sign into your account!",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 129, 129, 129),
                                   letterSpacing: 1),
@@ -164,7 +168,7 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 30),
+                              padding: const EdgeInsets.symmetric(vertical: 30),
                               child: CustomButton(
                                 text: "Sign In",
                                 ontap: loginfunc,

@@ -86,10 +86,13 @@ class _CreateAccountState extends State<CreateAccount> {
                     : Container(
                         height: size.height * 0.7,
                         width: size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(50),
+                              bottom: Radius.circular(50),
+                            ),
                             color: Colors.white,
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
                                 color: Colors.black,
                                 blurRadius: 35,
@@ -102,7 +105,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             const Text(
                               "Sign Up",
                               style: TextStyle(
-                                  fontSize: 33,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                   letterSpacing: 1),
@@ -110,7 +113,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             const Text(
                               "Let's create a account for you!",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 129, 129, 129),
                                   letterSpacing: 1),
@@ -130,12 +133,13 @@ class _CreateAccountState extends State<CreateAccount> {
                                 prefixIcon: Icons.email_rounded,
                                 suffixicon: Icons.star),
                             CustomTextField(
-                                controller: controllerPassword,
-                                hintText: "Password",
-                                obscureText: true,
-                                keyboard: TextInputType.text,
-                                prefixIcon: Icons.key_rounded,
-                                suffixicon: Icons.remove_red_eye_rounded),
+                              controller: controllerPassword,
+                              hintText: "Password",
+                              obscureText: true,
+                              keyboard: TextInputType.text,
+                              prefixIcon: Icons.key_rounded,
+                              suffixicon: Icons.remove_red_eye_rounded,
+                            ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
                                 15,

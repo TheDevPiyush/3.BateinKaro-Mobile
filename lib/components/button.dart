@@ -21,16 +21,21 @@ class CustomButton extends StatelessWidget {
         height: 60,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Colors.blueAccent[700],
-            borderRadius: const BorderRadius.horizontal(
-              left: Radius.circular(27),
-              right: Radius.circular(27),
-            )),
+          color: Colors.blueAccent[700],
+          borderRadius: const BorderRadius.horizontal(
+            left: Radius.circular(35),
+            right: Radius.circular(35),
+          ),
+          border: Border.all(
+            width: 2,
+            color: Colors.white,
+          ),
+        ),
         child: Text(
           text,
           style: const TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: 1),
         ),
