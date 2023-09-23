@@ -15,6 +15,7 @@ TextEditingController controllerEmail = TextEditingController();
 TextEditingController controllerPassword = TextEditingController();
 TextEditingController controllerName = TextEditingController();
 TextEditingController controllerPasswordConfirm = TextEditingController();
+bool hidden = true;
 
 bool isLoading = false;
 
@@ -105,7 +106,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             const Text(
                               "Sign Up",
                               style: TextStyle(
-                                  fontSize: 30,
+                                  fontSize: 27,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                   letterSpacing: 1),
@@ -114,31 +115,39 @@ class _CreateAccountState extends State<CreateAccount> {
                               "Let's create a account for you!",
                               style: TextStyle(
                                   fontSize: 15,
-                                  fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 129, 129, 129),
                                   letterSpacing: 1),
                             ),
                             CustomTextField(
-                                controller: controllerName,
-                                hintText: "Name",
-                                obscureText: false,
-                                keyboard: TextInputType.name,
-                                prefixIcon: Icons.email_rounded,
-                                suffixicon: Icons.star),
+                              controller: controllerName,
+                              hintText: "Name",
+                              obscureText: false,
+                              keyboard: TextInputType.name,
+                              prefixIcon: Icons.email_rounded,
+                              eyeFunc: () {},
+                            ),
                             CustomTextField(
-                                controller: controllerEmail,
-                                hintText: "Email",
-                                obscureText: false,
-                                keyboard: TextInputType.emailAddress,
-                                prefixIcon: Icons.email_rounded,
-                                suffixicon: Icons.star),
+                              controller: controllerEmail,
+                              hintText: "Email",
+                              obscureText: false,
+                              keyboard: TextInputType.emailAddress,
+                              prefixIcon: Icons.email_rounded,
+                              eyeFunc: () {},
+                            ),
                             CustomTextField(
                               controller: controllerPassword,
                               hintText: "Password",
-                              obscureText: true,
                               keyboard: TextInputType.text,
                               prefixIcon: Icons.key_rounded,
-                              suffixicon: Icons.remove_red_eye_rounded,
+                              obscureText: hidden ? true : false,
+                              eyeFunc: () {
+                                setState(() {
+                                  hidden = !hidden;
+                                });
+                              },
+                              eyeicon: hidden
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
@@ -164,6 +173,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                       "Sign In",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
+                                        fontSize: 14,
                                       ),
                                     ),
                                   )

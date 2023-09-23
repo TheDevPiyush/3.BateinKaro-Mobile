@@ -16,6 +16,7 @@ class Login extends StatefulWidget {
 TextEditingController controllerEmail = TextEditingController();
 TextEditingController controllerPassword = TextEditingController();
 bool isLoading = false;
+bool hidden = true;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class _LoginState extends State<Login> {
@@ -119,24 +120,32 @@ class _LoginState extends State<Login> {
                               "Sign into your account!",
                               style: TextStyle(
                                   fontSize: 15,
-                                  fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 129, 129, 129),
                                   letterSpacing: 1),
                             ),
                             CustomTextField(
-                                controller: controllerEmail,
-                                hintText: "Email",
-                                obscureText: false,
-                                keyboard: TextInputType.emailAddress,
-                                prefixIcon: Icons.email_rounded,
-                                suffixicon: Icons.star),
+                              controller: controllerEmail,
+                              hintText: "Email",
+                              obscureText: false,
+                              keyboard: TextInputType.emailAddress,
+                              prefixIcon: Icons.email_rounded,
+                              eyeFunc: () {},
+                            ),
                             CustomTextField(
-                                controller: controllerPassword,
-                                hintText: "Password",
-                                obscureText: true,
-                                keyboard: TextInputType.text,
-                                prefixIcon: Icons.key_rounded,
-                                suffixicon: Icons.star),
+                              controller: controllerPassword,
+                              hintText: "Password",
+                              keyboard: TextInputType.text,
+                              prefixIcon: Icons.key_rounded,
+                              obscureText: hidden ? true : false,
+                              eyeFunc: () {
+                                setState(() {
+                                  hidden = !hidden;
+                                });
+                              },
+                              eyeicon: hidden
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
                                 15,
@@ -161,6 +170,7 @@ class _LoginState extends State<Login> {
                                       "Sign Up",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
+                                        fontSize: 14,
                                       ),
                                     ),
                                   )
@@ -173,7 +183,7 @@ class _LoginState extends State<Login> {
                                 text: "Sign In",
                                 ontap: loginfunc,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),

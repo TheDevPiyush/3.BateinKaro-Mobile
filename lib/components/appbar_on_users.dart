@@ -29,7 +29,7 @@ class AppBarOnlineUserList extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 3.0),
                   child: Text(
                     FirebaseAuth.instance.currentUser?.uid == user.id
-                        ? user["name"] + " - " + "You,"
+                        ? user["name"] + " (You),"
                         : (user["name"] + ","), // Assuming user id is the UID
                     style: const TextStyle(color: Colors.white, fontSize: 15),
                   ),

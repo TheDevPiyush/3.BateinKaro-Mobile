@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:chatting_app/components/alert_box.dart';
 import 'package:chatting_app/components/appbar_on_users.dart';
 import 'package:chatting_app/components/button.dart';
+import 'package:chatting_app/components/loading_alert.dart';
 import 'package:chatting_app/pages/full_screen_image.dart';
 import 'package:chatting_app/signup_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,9 +18,11 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final Function ontapFunc;
+  const ChatScreen({super.key, required this.ontapFunc});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -109,6 +114,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       imageUpload = true;
       Navigator.pop(context);
     });
+    LoadingAlert.show(context);
     final FirebaseStorage storage = FirebaseStorage.instance;
     final Reference storageRef =
         storage.ref().child('images').child(image.toString());
@@ -131,12 +137,20 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         setState(() {
           imageUpload = false;
         });
+        LoadingAlert.hide(context);
       });
     } catch (e) {
       setState(() {
         imageUpload = false;
         Navigator.pop(context);
       });
+      LoadingAlert.hide(context);
+
+      // ignore: use_build_context_synchronously
+      CustomDialog(
+              title: "Error Uploading",
+              content: "There was some error uploading the file. Try again")
+          .show(context);
       // ignore: use_build_context_synchronously
       CustomDialog(
               title: "Upload Cancelled",
@@ -270,8 +284,20 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   deleteMessage(id) async {
     await _firestore.collection('messages').doc(id).delete();
-    // ignore: use_build_context_synchronously
     Navigator.pop(context, "OK");
+  }
+
+  _sendingMails() async {
+    var url = Uri.parse("mailto:piyushdev.developer@gmail.com");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // ignore: use_build_context_synchronously
+      CustomDialog(
+              title: "Email app not found",
+              content: "Reach me :\npiyushdev.developer@gmail.com")
+          .show(context);
+    }
   }
 
   @override
@@ -306,8 +332,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               color: Colors.white,
               onSelected: (value) {
                 if (value == 'option1') {
-                  Navigator.pop(context);
+                  widget.ontapFunc();
                 } else if (value == 'option2') {
+                  _sendingMails();
                 } else if (value == 'option3') {
                   logout();
                 }
@@ -322,7 +349,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         SizedBox(
                           width: 15,
                         ),
-                        Text('All Users'),
+                        Text(
+                          'All Users',
+                        ),
                       ],
                     ),
                   ),
@@ -416,44 +445,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       final Timestamp time =
                           message.get("timestamp") ?? Timestamp.now();
                       DateTime dateTime = time.toDate();
-                      DateFormat dateFormat = DateFormat('hh:mm a yy-MM-dd');
+                      DateFormat dateFormat = DateFormat('hh:mm a dd-MM-yyyy');
                       String formattedTime = dateFormat.format(dateTime);
 
                       Widget messageWidget = InkWell(
-                        onDoubleTap: () {
-                          showCupertinoDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CupertinoAlertDialog(
-                                title: const Text(
-                                    "Delete this message for everyone?"),
-                                content: Text(
-                                  messageText,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                actions: <Widget>[
-                                  CupertinoDialogAction(
-                                    child: const Text("Cancel"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  CupertinoDialogAction(
-                                    child: const Text("OK"),
-                                    onPressed: () {
-                                      deleteMessage(id);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
                         onTap: () {
                           final messageText =
                               message.get('text') as String? ?? '';
                           if (Uri.parse(messageText).isAbsolute) {
+                            print("CLICK");
                             Navigator.of(context).push(
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) {
@@ -504,54 +504,112 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                             const SizedBox(
                                               height: 8,
                                             ),
-                                            Container(
-                                              constraints: BoxConstraints(
-                                                maxWidth: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.5,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: const Color.fromARGB(
-                                                    255, 98, 26, 255),
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topLeft:
-                                                      Radius.circular(35.0),
-                                                  topRight:
-                                                      Radius.circular(35.0),
-                                                  bottomLeft:
-                                                      Radius.circular(35.0),
-                                                ),
-                                                border: Border.all(
-                                                  width: 2.0,
-                                                  color: const Color.fromARGB(
-                                                      255, 235, 235, 235),
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(13),
-                                                child: Container(
-                                                  child: isLink
-                                                      ? FadeInImage(
-                                                          placeholder:
-                                                              const AssetImage(
-                                                            "images/loading-gif.gif",
-                                                          ),
-                                                          image: NetworkImage(
-                                                              messageText),
-                                                        )
-                                                      : SelectableText(
-                                                          messageText,
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 17,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
+                                            InkWell(
+                                              onDoubleTap: () {
+                                                showCupertinoDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return CupertinoAlertDialog(
+                                                      title: const Text(
+                                                          "Delete this message for everyone?"),
+                                                      content: Text(
+                                                        messageText,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                      actions: <Widget>[
+                                                        CupertinoDialogAction(
+                                                          child: const Text(
+                                                              "Cancel"),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
                                                         ),
+                                                        CupertinoDialogAction(
+                                                          child:
+                                                              const Text("OK"),
+                                                          onPressed: () {
+                                                            deleteMessage(id);
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                  maxWidth:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.5,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: const Color.fromARGB(
+                                                      255, 98, 26, 255),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(35.0),
+                                                    topRight:
+                                                        Radius.circular(35.0),
+                                                    bottomLeft:
+                                                        Radius.circular(35.0),
+                                                  ),
+                                                  border: Border.all(
+                                                    width: 2.0,
+                                                    color: const Color.fromARGB(
+                                                        255, 235, 235, 235),
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(13),
+                                                  child: Container(
+                                                    child: isLink
+                                                        ? InkWell(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                                      MaterialPageRoute<
+                                                                          void>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return FullScreenImagePage(
+                                                                      imageUrl:
+                                                                          messageText);
+                                                                },
+                                                              ));
+                                                            },
+                                                            child: FadeInImage(
+                                                              placeholder:
+                                                                  const AssetImage(
+                                                                "images/loading-gif.gif",
+                                                              ),
+                                                              image: NetworkImage(
+                                                                  messageText),
+                                                            ),
+                                                          )
+                                                        : SelectableText(
+                                                            messageText,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 17,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                  ),
                                                 ),
                                               ),
                                             ),

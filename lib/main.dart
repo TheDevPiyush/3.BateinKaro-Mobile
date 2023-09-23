@@ -1,6 +1,5 @@
 import 'package:chatting_app/components/if_logged_in.dart';
-import 'package:chatting_app/pages/on_users_list.dart';
-import 'package:chatting_app/pages/chat_screen.dart';
+import 'package:chatting_app/pages/pageview.dart';
 import 'package:chatting_app/pages/create_account.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,8 +17,7 @@ void main() async {
     routes: {
       "/": (context) => IfLoggedIn(),
       "/signup": (context) => const CreateAccount(),
-      "/home": (context) => const ChatScreen(),
-      "/users": (context) => const OnlineUsersScreen(),
+      "/intro":(context) => const IntroPage(),
     },
     title: "Chatting App",
   ));

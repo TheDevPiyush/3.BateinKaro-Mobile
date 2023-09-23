@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OnlineUsersScreen extends StatelessWidget {
-  const OnlineUsersScreen({super.key});
+  final Function ontapFunc;
+
+  const OnlineUsersScreen({super.key, required this.ontapFunc});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class OnlineUsersScreen extends StatelessWidget {
               child: CustomButton(
                   text: "Let's Gossip",
                   ontap: () {
-                    Navigator.pushNamed(context, "/home");
+                    ontapFunc();
                   }),
             )
           ],
@@ -51,8 +53,12 @@ class OnlineUserList extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('users').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(
-            color: Colors.white,
+          return const SizedBox(
+            height: 50,
+            width: 50,
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
           );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');

@@ -13,7 +13,7 @@ Future login(String emailAddress, String password, BuildContext context) async {
         .user;
 
     if (user != null) {
-      Navigator.pushReplacementNamed(context, "/users");
+      Navigator.pushReplacementNamed(context, "/intro");
       return user;
     } else {
       CustomDialog(
