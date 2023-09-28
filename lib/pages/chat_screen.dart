@@ -146,12 +146,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       });
       LoadingAlert.hide(context);
 
-      // ignore: use_build_context_synchronously
       CustomDialog(
               title: "Error Uploading",
               content: "There was some error uploading the file. Try again")
           .show(context);
-      // ignore: use_build_context_synchronously
       CustomDialog(
               title: "Upload Cancelled",
               content:
@@ -241,13 +239,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     final QuerySnapshot usersSnapshot = await usersCollection.get();
     final List<String> tokens = [];
 
-    usersSnapshot.docs.forEach((userDoc) {
+    for (var userDoc in usersSnapshot.docs) {
       final userData = userDoc.data() as Map<String, dynamic>;
       if (userData.containsKey('token')) {
         final String userToken = userData['token'];
         tokens.add(userToken);
       }
-    });
+    }
 
     return tokens;
   }
@@ -292,7 +290,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      // ignore: use_build_context_synchronously
       CustomDialog(
               title: "Email app not found",
               content: "Reach me :\npiyushdev.developer@gmail.com")
@@ -431,6 +428,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     for (var message in documents.reversed) {
                       // CHECK IF MESSAGE IS LINK OR NOT
                       final messageText = message.get('text') as String? ?? '';
+
                       if (Uri.parse(messageText).isAbsolute) {
                         isLink = true;
                       } else {
@@ -453,7 +451,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           final messageText =
                               message.get('text') as String? ?? '';
                           if (Uri.parse(messageText).isAbsolute) {
-                            print("CLICK");
                             Navigator.of(context).push(
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) {
@@ -589,6 +586,33 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                               ));
                                                             },
                                                             child: FadeInImage(
+                                                              imageErrorBuilder:
+                                                                  (context,
+                                                                      error,
+                                                                      stackTrace) {
+                                                                return GestureDetector(
+                                                                  onTap: () {
+                                                                    launchUrl(
+                                                                      Uri.parse(
+                                                                          messageText),
+                                                                    );
+                                                                  },
+                                                                  child:
+                                                                      SelectableText(
+                                                                    messageText,
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          17,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
                                                               placeholder:
                                                                   const AssetImage(
                                                                 "images/loading-gif.gif",
@@ -677,6 +701,22 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                               child: Container(
                                                 child: isLink
                                                     ? FadeInImage(
+                                                        imageErrorBuilder:
+                                                            (context, error,
+                                                                stackTrace) {
+                                                          return SelectableText(
+                                                            messageText,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 17,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          );
+                                                        },
                                                         placeholder:
                                                             const AssetImage(
                                                                 "images/loading-gif.gif"),

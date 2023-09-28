@@ -26,7 +26,7 @@ class _IntroPageState extends State<IntroPage> {
           OnlineUsersScreen(
             ontapFunc: () {
               _controller.nextPage(
-                duration: Duration(seconds: 1),
+                duration: const Duration(seconds: 1),
                 curve: Curves.easeInOut,
               );
             },
@@ -34,7 +34,7 @@ class _IntroPageState extends State<IntroPage> {
           ChatScreen(
             ontapFunc: () {
               _controller.previousPage(
-                duration: Duration(seconds: 1),
+                duration: const Duration(seconds: 1),
                 curve: Curves.easeInOut,
               );
             },
