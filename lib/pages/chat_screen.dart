@@ -572,29 +572,34 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                         ? InkWell(
                                                             onTap: () {
                                                               Navigator.of(
-                                                                      context)
-                                                                  .push(
-                                                                      MaterialPageRoute<
-                                                                          void>(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
+                                                                context,
+                                                              ).push(
+                                                                  MaterialPageRoute<
+                                                                      void>(
+                                                                builder: (
+                                                                  BuildContext
+                                                                      context,
+                                                                ) {
                                                                   return FullScreenImagePage(
-                                                                      imageUrl:
-                                                                          messageText);
+                                                                    imageUrl:
+                                                                        messageText,
+                                                                  );
                                                                 },
                                                               ));
                                                             },
                                                             child: FadeInImage(
                                                               imageErrorBuilder:
-                                                                  (context,
-                                                                      error,
-                                                                      stackTrace) {
+                                                                  (
+                                                                context,
+                                                                error,
+                                                                stackTrace,
+                                                              ) {
                                                                 return GestureDetector(
                                                                   onTap: () {
                                                                     launchUrl(
                                                                       Uri.parse(
-                                                                          messageText),
+                                                                        messageText,
+                                                                      ),
                                                                     );
                                                                   },
                                                                   child:
@@ -603,7 +608,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                                     style:
                                                                         const TextStyle(
                                                                       fontSize:
-                                                                          17,
+                                                                          15,
                                                                       color: Colors
                                                                           .white,
                                                                       fontWeight:
@@ -625,7 +630,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                             messageText,
                                                             style:
                                                                 const TextStyle(
-                                                              fontSize: 17,
+                                                              fontSize: 15,
                                                               color:
                                                                   Colors.white,
                                                               fontWeight:
@@ -708,7 +713,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                             messageText,
                                                             style:
                                                                 const TextStyle(
-                                                              fontSize: 17,
+                                                              fontSize: 15,
                                                               color:
                                                                   Colors.white,
                                                               fontWeight:
@@ -726,7 +731,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                     : SelectableText(
                                                         messageText,
                                                         style: const TextStyle(
-                                                          fontSize: 17,
+                                                          fontSize: 15,
                                                           color: Colors.white,
                                                           fontWeight:
                                                               FontWeight.w500,

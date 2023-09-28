@@ -1,4 +1,5 @@
 import 'package:chatting_app/components/if_logged_in.dart';
+import 'package:chatting_app/pages/login.dart';
 import 'package:chatting_app/pages/pageview.dart';
 import 'package:chatting_app/pages/create_account.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,10 @@ void main() async {
     themeMode: ThemeMode.system,
     debugShowCheckedModeBanner: false,
     routes: {
-      "/": (context) => IfLoggedIn(),
+      "/": (context) => const IfLoggedIn(),
       "/signup": (context) => const CreateAccount(),
       "/intro":(context) => const IntroPage(),
+      "/login":(context) => const Login(),
     },
     title: "Chatting App",
   ));
