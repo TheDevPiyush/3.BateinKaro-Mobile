@@ -25,7 +25,7 @@ Future login(String emailAddress, String password, BuildContext context) async {
     if (e.code == 'user-not-found') {
       CustomDialog(
         title: "User Not Found",
-        content: "No user is available for that email address.",
+        content: "No user is available for that email address. Sign Up now.",
       ).show(context);
     } else if (e.code == 'wrong-password') {
       CustomDialog(
