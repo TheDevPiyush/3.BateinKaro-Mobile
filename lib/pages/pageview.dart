@@ -21,6 +21,7 @@ class _IntroPageState extends State<IntroPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: _controller,
         children: [
           OnlineUsersScreen(

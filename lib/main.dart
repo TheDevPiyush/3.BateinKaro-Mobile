@@ -18,8 +18,8 @@ void main() async {
     routes: {
       "/": (context) => const IfLoggedIn(),
       "/signup": (context) => const CreateAccount(),
-      "/intro":(context) => const IntroPage(),
-      "/login":(context) => const Login(),
+      "/intro": (context) => const IntroPage(),
+      "/login": (context) => const Login(),
     },
     title: "Chatting App",
   ));

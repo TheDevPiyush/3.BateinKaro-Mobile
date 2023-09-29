@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,9 +43,19 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBmPg8URUK_w97Dw4JtJMvSdaGqVak3vPA',
+    appId: '1:533966941058:web:73f0717952c601a90dfd9b',
+    messagingSenderId: '533966941058',
+    projectId: 'gossip-thedevpiyush',
+    authDomain: 'gossip-thedevpiyush.firebaseapp.com',
+    storageBucket: 'gossip-thedevpiyush.appspot.com',
+    measurementId: 'G-FCS8EMDBEQ',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBTjNQViyeXoM2Muujs2vmjZndSQ_tmp0E',
-    appId: '1:533966941058:android:2638c9d35e791f200dfd9b',
+    appId: '1:533966941058:android:19c97622dbd9f3d90dfd9b',
     messagingSenderId: '533966941058',
     projectId: 'gossip-thedevpiyush',
     storageBucket: 'gossip-thedevpiyush.appspot.com',
@@ -63,7 +67,19 @@ class DefaultFirebaseOptions {
     messagingSenderId: '533966941058',
     projectId: 'gossip-thedevpiyush',
     storageBucket: 'gossip-thedevpiyush.appspot.com',
+    androidClientId: '533966941058-60thvog3qs39ll6i38qfl01ungvmfh4i.apps.googleusercontent.com',
     iosClientId: '533966941058-4i4jndtemhks2p9etel1arhka363l7bb.apps.googleusercontent.com',
     iosBundleId: 'com.example.chattingApp',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDMXMvFnt0cPs4zUaYi6e1pefsvqeorwEk',
+    appId: '1:533966941058:ios:a91a88c2a6c58d840dfd9b',
+    messagingSenderId: '533966941058',
+    projectId: 'gossip-thedevpiyush',
+    storageBucket: 'gossip-thedevpiyush.appspot.com',
+    androidClientId: '533966941058-60thvog3qs39ll6i38qfl01ungvmfh4i.apps.googleusercontent.com',
+    iosClientId: '533966941058-aei47e4trt0k75qbol454sond7n33ih1.apps.googleusercontent.com',
+    iosBundleId: 'com.example.chattingApp.RunnerTests',
   );
 }

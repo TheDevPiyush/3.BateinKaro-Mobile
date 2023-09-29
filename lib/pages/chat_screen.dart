@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:chatting_app/components/alert_box.dart';
 import 'package:chatting_app/components/appbar_on_users.dart';
 import 'package:chatting_app/components/button.dart';
@@ -63,44 +64,53 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   end: Alignment.bottomRight,
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.cancel,
-                        size: 25,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 5, color: Colors.white),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(15),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.cancel,
+                          size: 25,
+                          color: Colors.white,
                         ),
                       ),
-                      child: image != null
-                          ? Image.file(image!)
-                          : const Center(
-                              child: Text("Image could not be selected.")),
                     ),
-                  ),
-                  CustomButton(
-                    text: "Send",
-                    ontap: () {
-                      uploadImage(imagePathforupload);
-                    },
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 5, color: Colors.white),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        child: image != null
+                            ? Image.file(
+                                image!,
+                                // fit: BoxFit.fill,
+                              )
+                            : const Center(
+                                child: Text("Image could not be selected.")),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomButton(
+                      text: "Send",
+                      ontap: () {
+                        uploadImage(imagePathforupload);
+                      },
+                    )
+                  ],
+                ),
               ),
             );
           },
@@ -594,27 +604,18 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                                 error,
                                                                 stackTrace,
                                                               ) {
-                                                                return GestureDetector(
-                                                                  onTap: () {
-                                                                    launchUrl(
-                                                                      Uri.parse(
-                                                                        messageText,
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                  child:
-                                                                      SelectableText(
-                                                                    messageText,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          15,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
+                                                                return SelectableText(
+                                                                  error
+                                                                      .toString(),
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
                                                                   ),
                                                                 );
                                                               },
@@ -710,7 +711,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                             (context, error,
                                                                 stackTrace) {
                                                           return SelectableText(
-                                                            messageText,
+                                                            error.toString(),
                                                             style:
                                                                 const TextStyle(
                                                               fontSize: 15,
@@ -780,11 +781,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         ),
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.add_photo_alternate),
-                      onPressed: imageModal,
-                      color: Colors.white,
-                    ),
+                    sendButtonWidget(imageModal),
                     IconButton(
                       icon: const Icon(Icons.send),
                       onPressed: _sendMessage,
@@ -798,5 +795,28 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+}
+
+void disabled(BuildContext context) {
+  showCupertinoDialog(
+    context: context,
+    builder: (context) {
+      return const CupertinoDialogAction(
+        child: Text("OK"),
+      );
+    },
+  );
+}
+
+Widget sendButtonWidget(imageModal) {
+  if (!kIsWeb) {
+    return IconButton(
+      icon: const Icon(Icons.add_photo_alternate),
+      onPressed: imageModal,
+      color: Colors.white,
+    );
+  } else {
+    return Container();
   }
 }

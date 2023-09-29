@@ -7,14 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:533966941058:android:2638c9d35e791f200dfd9b",
+        "mobilesdk_app_id": "1:533966941058:android:19c97622dbd9f3d90dfd9b",
         "android_client_info": {
-          "package_name": "com.example.chatting_app"
+          "package_name": "app.web.thedevpiyush.letsgossip"
         }
       },
       "oauth_client": [
         {
-          "client_id": "533966941058-t1ar3bn9sd80vhfbcvlpttl809gqvnab.apps.googleusercontent.com",
+          "client_id": "533966941058-dcmnkq00g9hpkpbg3v64rr2n3unelm5l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +27,59 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "533966941058-t1ar3bn9sd80vhfbcvlpttl809gqvnab.apps.googleusercontent.com",
+              "client_id": "533966941058-dcmnkq00g9hpkpbg3v64rr2n3unelm5l.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "533966941058-4i4jndtemhks2p9etel1arhka363l7bb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chattingApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533966941058:android:2638c9d35e791f200dfd9b",
+        "android_client_info": {
+          "package_name": "com.example.chatting_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533966941058-60thvog3qs39ll6i38qfl01ungvmfh4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatting_app",
+            "certificate_hash": "c5b95d6ca2d8e3d9d078e5a6f4683cd665558d92"
+          }
+        },
+        {
+          "client_id": "533966941058-dcmnkq00g9hpkpbg3v64rr2n3unelm5l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTjNQViyeXoM2Muujs2vmjZndSQ_tmp0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533966941058-dcmnkq00g9hpkpbg3v64rr2n3unelm5l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533966941058-4i4jndtemhks2p9etel1arhka363l7bb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chattingApp"
+              }
             }
           ]
         }
